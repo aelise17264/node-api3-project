@@ -100,7 +100,7 @@ router.put('/:id', validateUserId, (req, res) => {
   Users.update(req.params.id, req.body)
   .then(user => {
     if(user){
-      res.status(200).json(user)
+      res.status(200).json({message: "user updated"})
     }else{
       res.status(404).json({message: "User not found"})
     }
@@ -127,20 +127,21 @@ function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // do your magic!
-  if(req.body.name){
-    next()
-  }else{
+  const {name} = req.body
+  if(!name){
     res.status(400).json({message: "check your user name"})
   }
+  next()
 }
+
 
 function validatePost(req, res, next) {
   // do your magic!
- if(req.body.post){
-   next()
- }else{
-   res.status(403).json({message: 'check your post'})
+  const {text} = req.body
+ if(!text){
+  res.status(400).json({message: 'check your post'})
  }
+ next()
 }
 
 module.exports = router;
